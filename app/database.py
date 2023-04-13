@@ -37,6 +37,8 @@ def update_task_entry(task_id: int, text: str) -> None:
     postgres.commit()
     cursor.close()
 
+    return query
+
 
 def insert_new_task(text: str, id: int) -> int:
     """Insert new task to todo table.
