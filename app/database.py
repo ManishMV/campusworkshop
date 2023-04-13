@@ -8,12 +8,11 @@ def fetch_todo() -> dict:
         A list of dictionaries
     """
     cursor = postgres.cursor()
-    cursor.execute("Select * from tasks ORDER BY id ASC;")
+    cursor.execute("SELECT * FROM tasks ORDER BY id ASC;")
     data = cursor.fetchall()
     postgres.commit()
     cursor.close()
     todo_list = []
-    print(data)
     for result in data:
         item = {
             "id": result[0],
@@ -24,33 +23,31 @@ def fetch_todo() -> dict:
     return todo_list
 
 
-"""Assignment 2
-    Updates task description based on given `task_id`
+def update_task_entry(task_id: int, text: str) -> None:
+    """Updates task description based on given `task_id`
     Args:
         task_id (int): Targeted task_id
         text (str): Updated description
     Returns:
         None
-"""
-
-
-def update_task_entry(task_id: int , text: str):
+    """
     cursor = postgres.cursor()
-    query = "Update tasks set task = '{}' where id = {};".format(text,task_id)
+    query = "UPDATE tasks SET task = '{}' WHERE id = {};".format(text, task_id)
     cursor.execute(query)
     postgres.commit()
     cursor.close()
 
 
-def insert_new_task(text: str , id: int) -> int:
+def insert_new_task(text: str, id: int) -> int:
     """Insert new task to todo table.
     Args:
         text (str): Task description
-    Returns: The task ID for the inserted entry
+    Returns:
+        The task ID for the inserted entry
     """
     cursor = postgres.cursor()
-    query = "Insert Into tasks (id,task, status) VALUES ({},'{}', '{}');".format(id,
-        text, 'Todo')
+    query = "INSERT INTO tasks (id, task, status) VALUES ({},'{}', '{}');".format(
+        id, text, 'Todo')
     cursor.execute(query)
     postgres.commit()
     cursor.close()
@@ -59,15 +56,16 @@ def insert_new_task(text: str , id: int) -> int:
 
 
 def remove_task_by_id(task_id: int) -> None:
-    """ remove entries based on task ID """
+    """ Remove entries based on task ID """
     try:
         cursor = postgres.cursor()
-        query = 'Delete From tasks where id={}'.format(task_id)
+        query = 'DELETE FROM tasks WHERE id={}'.format(task_id)
         cursor.execute(query)
         postgres.commit()
         cursor.close()
     except:
         print("test")
+
 
 
 def fetch_max_id() -> int:
